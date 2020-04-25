@@ -15,13 +15,23 @@ export default function App() {
   const [repositories, setRepo] = useState([]);
 
   async function handleLikeRepository(id) {
+    console.log(repositories);
     const response = await api.post(`/repositories/${id}/like`);
-
-    const liked = response.data;
+    console.log(response);
+    const liked = response.data.likes;
 
     const newRepositories = repositories.map( item => {
       if ( item.id === id ) {
-        return liked;
+        
+        const data = { 
+          "id": item.id,
+          "likes": liked,
+          "techs": item.techs,
+          "title": item.title,
+          "url": item.url,
+         }
+
+        return data;
       } else {
         return item;
       }
@@ -66,7 +76,7 @@ export default function App() {
                     style={styles.likeText}
                     testID={`repository-likes-${ item.id }`}
                   >
-                  { item.likes } curtida(s)
+                  { item.likes } curtidas
                   </Text>
                 </View>
 
